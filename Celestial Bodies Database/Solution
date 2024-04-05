@@ -1,0 +1,165 @@
+psql --username=freecodecamp --dbname=postgres
+
+CREATE DATABASE universe;
+
+\c universe
+
+CREATE TABLE galaxy(
+    galaxy_id SERIAL NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
+    constellation TEXT,
+    type VARCHAR,
+    year_discovered INT,
+    distance_from_earth_in_LY NUMERIC,
+    size_in_LY NUMERIC,
+    disc_id INT NOT NULL
+);
+
+CREATE TABLE star(
+    star_id SERIAL NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
+    galaxy_id INT,
+    spectral_type VARCHAR,
+    year_discovered INT,
+    has_planets BOOLEAN,
+    num_planets INT,
+    disc_id INT NOT NULL
+);
+
+CREATE TABLE planet(
+    planet_id SERIAL NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
+    star_id INT,
+    radius_size_kms NUMERIC,
+    year_discovered INT,
+    has_life BOOLEAN,
+    has_rings BOOLEAN,
+    num_rings INT,
+    has_moons BOOLEAN,
+    num_moons INT,
+    disc_id INT NOT NULL
+);
+
+CREATE TABLE moon(
+    moon_id SERIAL NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
+    planet_id INT,
+    radius_size_kms NUMERIC,
+    year_discovered INT,
+    is_spherical BOOLEAN,
+    has_water BOOLEAN,
+    disc_id INT NOT NULL
+);
+
+CREATE TABLE disc(
+    disc_id SERIAL NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
+    country VARCHAR,
+    year INT
+);
+
+ALTER TABLE disc ADD PRIMARY KEY (disc_id);
+
+ALTER TABLE galaxy ADD PRIMARY KEY (galaxy_id);
+ALTER TABLE galaxy ADD FOREIGN KEY (disc_id) REFERENCES disc(disc_id);
+
+ALTER TABLE star ADD PRIMARY KEY (star_id);
+ALTER TABLE star ADD FOREIGN KEY (galaxy_id) REFERENCES galaxy(galaxy_id);
+ALTER TABLE star ADD FOREIGN KEY (disc_id) REFERENCES disc(disc_id);
+
+ALTER TABLE planet ADD PRIMARY KEY (planet_id);
+ALTER TABLE planet ADD FOREIGN KEY (star_id) REFERENCES star(star_id);
+ALTER TABLE planet ADD FOREIGN KEY (disc_id) REFERENCES disc(disc_id);
+
+ALTER TABLE moon ADD PRIMARY KEY (moon_id);
+ALTER TABLE moon ADD FOREIGN KEY (planet_id) REFERENCES planet(planet_id);
+ALTER TABLE moon ADD FOREIGN KEY (disc_id) REFERENCES disc(disc_id);
+
+
+INSERT INTO disc (name, country, year) VALUES
+('disc1', 'country1', 1900),
+('disc2', 'country2', 1900),
+('disc3', 'country3', 1900),
+('disc4', 'country4', 1900),
+('disc5', 'country5', 1900),
+('disc6', 'country6', 1900),
+('disc7', 'country7', 1900),
+('disc8', 'country8', 1900),
+('disc9', 'country9', 1900),
+('disc10', 'country10', 1900),
+('disc11', 'country11', 1900),
+('disc12', 'country12', 1900),
+('disc13', 'country13', 1900),
+('disc14', 'country14', 1900),
+('disc15', 'country15', 1900),
+('disc16', 'country16', 1900),
+('disc17', 'country17', 1900),
+('disc18', 'country18', 1900),
+('disc19', 'country19', 1900),
+('disc20', 'country20', 1900)
+;
+
+
+INSERT INTO galaxy (name, disc_id) VALUES
+('galaxy1', 1),
+('galaxy2', 2),
+('galaxy3', 3),
+('galaxy4', 4),
+('galaxy5', 5),
+('galaxy6', 6)
+;
+
+
+INSERT INTO star (name, galaxy_id, disc_id) VALUES
+('star1', 1, 1),
+('star2', 2, 2),
+('star3', 3, 3),
+('star4', 4, 4),
+('star5', 5, 5),
+('star6', 6, 6)
+;
+
+
+INSERT INTO planet (name, star_id, disc_id) VALUES
+('planet1', 1, 1),
+('planet2', 2, 2),
+('planet3', 3, 3),
+('planet4', 4, 4),
+('planet5', 5, 5),
+('planet6', 6, 6),
+('planet7', 1, 7),
+('planet8', 2, 8),
+('planet9', 3, 9),
+('planet10', 4, 10),
+('planet11', 5, 11),
+('planet12', 6, 12)
+;
+
+
+INSERT INTO moon (name, planet_id, disc_id) VALUES
+('moon1', 1, 1),
+('moon2', 2, 2),
+('moon3', 3, 3),
+('moon4', 4, 4),
+('moon5', 5, 5),
+('moon6', 6, 6),
+('moon7', 7, 7),
+('moon8', 8, 8),
+('moon9', 9, 9),
+('moon10', 10, 10),
+('moon11', 1, 11),
+('moon12', 2, 12),
+('moon13', 3, 13),
+('moon14', 4, 14),
+('moon15', 5, 15),
+('moon16', 6, 16),
+('moon17', 7, 17),
+('moon18', 8, 18),
+('moon19', 9, 19),
+('moon20', 2, 20)
+;
+
+
+Quit
+
+pg_dump -cC --inserts -U freecodecamp universe > universe.sql
