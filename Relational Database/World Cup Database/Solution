@@ -22,3 +22,9 @@ ALTER TABLE games ADD FOREIGN KEY (opponent_id) REFERENCES teams(team_id);
 
 chmod +x insert_data.sh
 chmod +x queries.sh
+
+./insert_data.sh
+./queries.sh
+
+pg_dump -cC --inserts -U freecodecamp worldcup > worldcup.sql
+psql -U postgres < worldcup.sql
