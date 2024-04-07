@@ -39,6 +39,13 @@ ALTER TABLE majors_courses ADD PRIMARY KEY (major_id, course_id);
 
 Quit
 
-insert_data.sh
+chmod +x insert_data.sh
+./insert_data.sh
 
 pg_dump --clean --create --inserts --username=freecodecamp students > students.sql
+
+psql -U postgres < students.sql
+
+chmod +x student_info.sh
+./student_info.sh
+
