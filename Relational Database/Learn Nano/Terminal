@@ -1,0 +1,4 @@
+# Nano is a program for editing files that runs in the terminal. You can open a file with nano filename
+touch castle.sh
+nano castle.sh
+bash castle.sh
