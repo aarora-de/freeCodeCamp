@@ -14,14 +14,23 @@ my_graph = {
     'F': [('B', 2), ('D', 3)]
 }
 
+# Algorithm explanation:
+# https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/
+# https://www.freecodecamp.org/news/dijkstras-algorithm-explained-with-a-pseudocode-example/
 
 def shortest_path(graph, start, target=''):
+    # List of unvisited nodes. We will remove the nodes that have been visited.
     unvisited = list(graph)
+    # Dictionary to keep track of the distances between start node and other nodes.
     distances = {node: 0 if node == start else float('inf') for node in graph}
+    # Dictionary to keep track of the shortest distance path from start node
     paths = {node: [] for node in graph}
+    # Path from source to source
     paths[start].append(start)
     
+    # Loop through the unvisited nodes
     while unvisited:
+        # select node to visit based on the distances
         current = min(unvisited, key=distances.get)
         for node, distance in graph[current]:
             if distance + distances[current] < distances[node]:
